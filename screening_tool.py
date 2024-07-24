@@ -4,16 +4,19 @@ import pdfplumber
 import csv
 from flask import Flask, request, jsonify, render_template, send_file
 from werkzeug.utils import secure_filename
-import os
 from dotenv import load_dotenv
-
-
 
 app = Flask(__name__)
 
+# Load environment variables from .env file
 load_dotenv()
 
+# Get the OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+if not openai.api_key:
+    raise ValueError("API key not found. Make sure you have set it in the .env file.")
+
 results = []
 
 def chat_gpt(conversation):
@@ -88,4 +91,8 @@ def index():
     return render_template('upload.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        app.run(debug=True)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        input("Press Enter to exit...")
