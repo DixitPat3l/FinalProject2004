@@ -4,10 +4,16 @@ import pdfplumber
 import csv
 from flask import Flask, request, jsonify, render_template, send_file
 from werkzeug.utils import secure_filename
+import os
+from dotenv import load_dotenv
+
+
 
 app = Flask(__name__)
-openai.api_key = "sk-None-8WgXqPGKmwJeIXMONcPiT3BlbkFJDqjxR7iErT4HUV7IUQEk"
 
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 results = []
 
 def chat_gpt(conversation):
