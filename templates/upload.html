@@ -27,7 +27,7 @@
         height: 100%;
         background: url('{{ url_for('static', filename='images/img13.jpg') }}') no-repeat center top fixed;
         background-size: cover;
-        filter: blur(0px); /* Adjust the blur intensity as needed */
+        filter: blur(0px) brightness(40%); /* Adjust the blur and brightness as needed */
         z-index: -1;
       }
       .header {
@@ -131,7 +131,9 @@
       }
       p {
         margin: 15px 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adjust the text-shadow value with rgba */
       }
+
       input[type="file"] {
         width: 100%;
         padding: 10px;
