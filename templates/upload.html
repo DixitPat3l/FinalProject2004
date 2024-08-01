@@ -6,29 +6,69 @@
     <title>AI-Powered Resume Screening Tool</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-      body {
-        font-family: 'Montserrat', sans-serif;
+      html, body {
         margin: 0;
         padding: 0;
-        background: url('{{ url_for('static', filename='images/img2.jpg') }}') no-repeat center top fixed;
-        background-size: cover;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+      }
+      body {
+        font-family: 'Montserrat', sans-serif;
+        position: relative;
         color: #333;
       }
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{{ url_for('static', filename='images/img13.jpg') }}') no-repeat center top fixed;
+        background-size: cover;
+        filter: blur(0px); /* Adjust the blur intensity as needed */
+        z-index: -1;
+      }
       .header {
-        background: url('{{ url_for('static', filename='images/img5.png') }}') no-repeat center center;
+        /* background: url('{{ url_for('static', filename='images/img5.png') }}') no-repeat center center; */
         background-size: cover;
         padding: 20px 0;
         text-align: center;
+        position: relative;
+      }
+      .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        filter: blur(10px); /* Adjust the blur intensity as needed */
+        z-index: -1;
       }
       .container {
-        background: url('{{ url_for('static', filename='images/img7.png') }}') no-repeat center top;
+        background: url('{{ url_for('static', filename='images/img14.jpg') }}') no-repeat center top;
         background-size: cover;
         max-width: 1600px;
         margin: 20px auto; /* Added margin to create a gap */
         padding: 20px;
         background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
         border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 8px rgba(0,0,0,1);
+        position: relative;
+      }
+      .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        filter: blur(0px); /* Adjust the blur intensity as needed */
+        z-index: -1;
       }
       .description {
         color: white;
@@ -38,57 +78,100 @@
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        
       }
       th, td {
         padding: 10px;
         text-align: left;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #00b7ff;
+        text-shadow: 2px 2px 4px #333; /* Added proper text-shadow value */
       }
       th {
-        background-color: #3498db;
+        background-color: #3891cc;
         color: white;
       }
       td {
         color: white; /* Set text color in table cells to white */
       }
       h1 {
-        font-size: 2.5em;
-        margin-top: 0;
-        text-align: center;
+      color: white;
+      font-size: 2.5em;
+      margin-top: 0;
+      text-align: center;
+      text-shadow: 2px 2px 4px #333; /* Added proper text-shadow value */
       }
+
       h2 {
-        color: white;
-        font-size: 2.5em;
-        margin-top: 0;
-        text-align: center;
+          color: white;
+          font-size: 2.5em;
+          margin-top: 0;
+          text-align: center;
+          text-shadow: 2px 2px 4px #333; /* Added proper text-shadow value */
       }
+
       form {
-        background: url('{{ url_for('static', filename='images/img7.png') }}') no-repeat center center;
+        /* background: url('{{ url_for('static', filename='images/img7.png') }}') no-repeat center center; */
         background-size: cover;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         margin-top: 20px;
+        position: relative;
+      }
+      form::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        filter: blur(10px); /* Adjust the blur intensity as needed */
+        z-index: -1;
       }
       p {
         margin: 15px 0;
       }
-      input[type="file"],
-      textarea,
-      input[type="text"],
-      button {
+      input[type="file"] {
         width: 100%;
         padding: 10px;
         margin: 10px 0;
-        border: 1px solid #ccc;
+        border: 1px solid #0099ff;
+        border-radius: 10px;
+        color: white; /* Set text color to white */
+        background-color: rgba(1, 123, 204, 0.7); /* Slightly transparent background */
+      }
+      input[type="file"]::-webkit-file-upload-button {
+        background: #3891cc;
+        color: white;
+        border: none;
+        padding: 10px;
         border-radius: 5px;
+        cursor: pointer;
+      }
+      input[type="file"]::-webkit-file-upload-button:hover {
+        background: #3891cc;
+      }
+      input[type="file"]::file-selector-button {
+        background: #0099ff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      input[type="file"]::file-selector-button:hover {
+        background: #0099ff;
       }
       button {
-        background-color: #3498db;
+        background-color: #3891cc;
         color: white;
         border: none;
         cursor: pointer;
         transition: background-color 0.3s;
+        padding: 10px;
+        border-radius: 10px;
+        width: 100%;
       }
       button:hover {
         background-color: #2980b9;
@@ -96,7 +179,7 @@
       .loader {
         border: 12px solid #f3f3f3;
         border-radius: 50%;
-        border-top: 12px solid #3498db;
+        border-top: 12px solid #3891cc;
         width: 30px;
         height: 30px;
         animation: spin 2s linear infinite;
@@ -107,19 +190,26 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+      .centered-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
       }
-      th, td {
-        padding: 10px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
+      a {
+        color: #5cb3ee; /* Regular link color */
+        text-decoration: none; /* Remove underline */
       }
-      th {
-        background-color: #3498db;
-        color: white;
+
+      a:hover {
+        color: #2980b9; /* Link color on hover */
+      }
+
+      a:visited {
+        color: #e196ff; /* Link color after being visited */
+      }
+
+      a:visited:hover {
+        color: #b022ec; /* Hover color for visited links */
       }
     </style>
   </head>
@@ -135,8 +225,8 @@
         <p><label for="job_description" class="description">Enter Job Description</label></p>
         <p><textarea id="job_description" name="job_description" placeholder="Job Description" required></textarea></p>
         <p><label for="mandatory_keywords" class="description">Enter Key Words</label></p>
-        <p><input type="text" id="mandatory_keywords" name="mandatory_keywords" placeholder="Mandatory Keywords" required></p>
-        <p><button type="submit">Submit</button></p>
+        <p><textarea type="text" id="mandatory_keywords" name="mandatory_keywords" placeholder="Mandatory Keywords" required></textarea></p>
+        <p><button type="submit">SUBMIT</button></p>
         <p><button id="downloadCSV" type="button" style="display: none;">Download CSV</button></p>
         <div class="loader" id="loadingSpinner"></div>
       </form>
@@ -144,9 +234,12 @@
       <table id="resultsTable">
         <thead>
           <tr>
-            <th>Resume Name</th>
+            <th>File Name</th>
             <th>Comments</th>
             <th>Suitability</th>
+            <th>Best Job Fit</th>
+            <th>LinkedIn Job Link</th>
+            <th>Indeed Job Link</th>
           </tr>
         </thead>
         <tbody>
@@ -179,6 +272,20 @@
             newRow.insertCell().innerText = result[0];
             newRow.insertCell().innerText = result[1];
             newRow.insertCell().innerText = result[2];
+            newRow.insertCell().innerText = result[3];
+            const linkedinLinkCell = newRow.insertCell();
+            const linkedinLinkElement = document.createElement('a');
+            linkedinLinkElement.href = result[4];
+            linkedinLinkElement.innerText = 'LinkedIn Link';
+            linkedinLinkElement.target = '_blank';
+            linkedinLinkCell.appendChild(linkedinLinkElement);
+
+            const indeedLinkCell = newRow.insertCell();
+            const indeedLinkElement = document.createElement('a');
+            indeedLinkElement.href = result[5];
+            indeedLinkElement.innerText = 'Indeed Link';
+            indeedLinkElement.target = '_blank';
+            indeedLinkCell.appendChild(indeedLinkElement);
           });
 
           document.getElementById('downloadCSV').style.display = 'inline';

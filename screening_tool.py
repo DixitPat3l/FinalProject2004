@@ -24,19 +24,33 @@ def chat_gpt(conversation):
         model="gpt-3.5-turbo",
         messages=conversation
     )
-    return response.choices[0].message['content']
+    return response['choices'][0]['message']['content']
 
 def pdf_to_text(file_path):
     text = ''
     with pdfplumber.open(file_path) as pdf:
         for page in pdf.pages:
-            text += page.extract_text()
+            page_text = page.extract_text()
+            if page_text:
+                text += page_text
     return text
+
+def suggest_best_job_fit(resume_text):
+    conversation = [
+        {"role": "system", "content": "You are a helpful assistant specialized in recruitment and talent management."},
+        {"role": "user", "content": f"Analyze this resume and provide only a list of top 3 job titles best suited for it: {resume_text} (i want only a list of top 3 job titles. No descriptions needed.)"}
+    ]
+    return chat_gpt(conversation)
+
+def generate_sample_job_links(job_title):
+    linkedin_link = f"https://www.linkedin.com/jobs/search/?keywords={job_title.replace(' ', '%20')}"
+    indeed_link = f"https://www.indeed.com/jobs?q={job_title.replace(' ', '+')}"
+    return linkedin_link, indeed_link
 
 def update_csv(results):
     with open('results.csv', 'w', newline='') as csvfile:
         csv_writer = csv.writer(csvfile)
-        csv_writer.writerow(["Resume Name", "Comments", "Suitability"])
+        csv_writer.writerow(["Resume Name", "Comments", "Suitability", "Best Job Fit", "LinkedIn Job Link", "Indeed Job Link"])
         csv_writer.writerows(results)
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -53,6 +67,9 @@ def upload_resume():
         results = []
         for resume_file in resume_files:
             resume_text = pdf_to_text(resume_file)
+            best_job_fit = suggest_best_job_fit(resume_text).strip()
+            job_titles = best_job_fit.split('\n')
+            linkedin_link, indeed_link = generate_sample_job_links(job_titles[0])
 
             conversation = [
                 {"role": "system", "content": "You are a helpful assistant specialized in recruitment and talent management."},
@@ -74,7 +91,7 @@ def upload_resume():
             else:
                 suitability = "Suitable"
 
-            results.append([resume_file.filename, response, suitability])
+            results.append([resume_file.filename, response, suitability, best_job_fit, linkedin_link, indeed_link])
 
         return jsonify({"results": results})
     else:  # Handling the GET request
