@@ -1,8 +1,8 @@
 # FinalProject2004
-This is the Final Project for AIDI 2004 - AI in Enterprise Systems.
+## This is the Final Project for AIDI 2004 - AI in Enterprise Systems.
 
-AI-Powered Resume Screening Tool
-Project Overview
+### AI-Powered Resume Screening Tool
+#### Project Overview
 
 The AI-Powered Resume Screening Tool is a web application designed to assist in the recruitment process by analyzing resumes and providing feedback on their suitability for a given job description. It leverages the capabilities of OpenAI's GPT-3.5 to generate insights and recommendations based on the content of the resumes.
 Features
@@ -14,14 +14,14 @@ Features
     Generate links to relevant job postings on LinkedIn and Indeed.
     Download the results as a CSV file.
 
-Installation and Setup
-Prerequisites
+###Installation and Setup
+#### Prerequisites
 
     Python 3.7 or higher
     Virtual environment tool (e.g., venv or virtualenv)
     OpenAI API key
 
-Steps
+#### Steps
 
     Clone the repository:
 
@@ -31,18 +31,18 @@ git clone https://github.com/DixitPat3l/FinalProjectAIDI2004.git
 cd [Your folder name]
 
 
-Create and activate a virtual environment:
+### Create and activate a virtual environment:
 
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 
-Install the required dependencies:
+### Install the required dependencies:
 
 pip install -r requirements.txt
 
 
-Set up environment variables:
+### Set up environment variables:
 
     Create a .env file in the project root directory.
     Add your OpenAI API key to the .env file:
@@ -51,7 +51,7 @@ Set up environment variables:
 
     OPENAI_API_KEY=your_openai_api_key_here
 
-Run the application:
+### Run the application:
 
     python screening_tool.py
 
@@ -60,7 +60,7 @@ Run the application:
 
 
 
-Expected Results
+## Expected Results
 
 After uploading resumes and providing a job description and mandatory keywords, the application will analyze each resume and display the following results:
 
@@ -71,7 +71,7 @@ After uploading resumes and providing a job description and mandatory keywords, 
     LinkedIn Job Link: A link to relevant job postings on LinkedIn.
     Indeed Job Link: A link to relevant job postings on Indeed.
 
-User Guide
+## User Guide
 Uploading Resumes
 
     Upload Resume: Click the "Browse" button and select one or multiple PDF resumes from your computer.
@@ -101,8 +101,7 @@ Support
 
 
 
-Detailed Code Explanation
-Overview
+## Detailed Code Explanation
 
 This project is a Flask web application that uses OpenAI's GPT-3.5 model to analyze resumes and determine their suitability for a specific job description. It extracts text from PDF resumes, sends the extracted text along with the job description to OpenAI's API for analysis, and provides feedback on the suitability of each resume. Additionally, it suggests the top 3 job titles best suited for each resume and generates links to relevant job postings on LinkedIn and Indeed.
 Detailed Breakdown
@@ -123,13 +122,13 @@ Helper Functions
     generate_sample_job_links(): This function generates sample job search links for LinkedIn and Indeed based on a provided job title. It formats the job title into URL-friendly strings and constructs the search URLs.
     update_csv(): This function writes the results stored in the results list to a CSV file named results.csv.
 
-Flask Routes
+### Flask Routes
 
     /upload: This route handles both GET and POST requests. For POST requests, it processes uploaded resume files and analyzes them based on the provided job description and mandatory keywords. It uses the helper functions to extract text, suggest job titles, and determine the suitability of the resume. The results are then stored and returned as a JSON response. For GET requests, it renders the upload page.
     /download_csv: This route allows users to download the results as a CSV file. It calls the update_csv() function to ensure the latest results are written to the CSV before sending it to the user.
     /: This route renders the main upload page of the application.
 
-Running the Application
+### Running the Application
 
 The application is run with Flask's development server in debug mode. If an error occurs during execution, it is caught and printed to the console.
 
