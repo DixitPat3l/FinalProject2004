@@ -134,5 +134,3 @@ Running the Application
 The application is run with Flask's development server in debug mode. If an error occurs during execution, it is caught and printed to the console.
 
 Overall, the code implements a comprehensive resume screening tool that integrates PDF text extraction, natural language processing with GPT-3.5, and web development with Flask to provide a user-friendly interface for analyzing resumes against job descriptions.
-
-For any issues or questions regarding this project, please contact [support@example.com].
