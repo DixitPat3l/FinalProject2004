@@ -14,7 +14,7 @@ Features
     Generate links to relevant job postings on LinkedIn and Indeed.
     Download the results as a CSV file.
 
-###Installation and Setup
+### Installation and Setup
 #### Prerequisites
 
     Python 3.7 or higher
