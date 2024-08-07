@@ -1,7 +1,6 @@
 import pytest
 import os
 from fpdf import FPDF
-from flask import Flask
 from werkzeug.datastructures import FileStorage
 from screening_tool import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links
 
@@ -13,60 +12,63 @@ def client():
     with app.test_client() as client:
         yield client
 
+
 def create_test_resume_pdf(path):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Helvetica", size=12)
-    content = """John Doe
-Data Analyst
-Email: john.doe@example.com | Phone: (123) 456-7890 | LinkedIn: linkedin.com/in/johndoe
+    pdf.set_font("Arial", size=12)
+    content = """
+    John Doe
+    Data Analyst
+    Email: john.doe@example.com | Phone: (123) 456-7890 | LinkedIn: linkedin.com/in/johndoe
 
-Summary:
-Experienced Data Analyst with over 5 years of experience in data mining, data analysis, and statistical modeling. Proficient in Python, SQL, and data visualization tools like Tableau. Strong background in translating business requirements into actionable insights.
+    Summary:
+    Experienced Data Analyst with over 5 years of experience in data mining, data analysis, and statistical modeling. Proficient in Python, SQL, and data visualization tools like Tableau. Strong background in translating business requirements into actionable insights.
 
-Professional Experience:
+    Professional Experience:
 
-Data Analyst
-XYZ Corporation, New York, NY
-January 2019 to Present
-1. Conducted detailed data analysis using Python and SQL to identify trends and patterns in customer behavior.
-2. Developed and maintained dashboards in Tableau to visualize key performance metrics for stakeholders.
-3. Collaborated with cross-functional teams to define data requirements and provide data-driven insights for decision-making.
+    1. Data Analyst
+    XYZ Corporation, New York, NY
+    January 2019 to Present
+    Conducted detailed data analysis using Python and SQL to identify trends and patterns in customer behavior.
+    Developed and maintained dashboards in Tableau to visualize key performance metrics for stakeholders.
+    Collaborated with cross-functional teams to define data requirements and provide data-driven insights for decision-making.
 
-Junior Data Analyst
-ABC Solutions, San Francisco, CA
-June 2016 to December 2018
-1. Assisted in data collection and data cleaning processes for large datasets.
-2. Performed exploratory data analysis and created summary reports for various projects.
-3. Supported senior analysts in building predictive models using statistical techniques.
+    2. Junior Data Analyst
+    ABC Solutions, San Francisco, CA
+    June 2016 to December 2018
+    Assisted in data collection and data cleaning processes for large datasets.
+    Performed exploratory data analysis and created summary reports for various projects.
+    Supported senior analysts in building predictive models using statistical techniques.
 
-Education:
+    Education:
 
-Bachelor of Science in Statistics
-University of California, Berkeley
-Graduated: May 2016
+    Bachelor of Science in Statistics
+    University of California, Berkeley
+    Graduated: May 2016
 
-Skills:
-1. Data Analysis: Python, SQL, R
-2. Data Visualization: Tableau, Power BI, Matplotlib, Seaborn
-3. Statistical Modeling: Linear Regression, Logistic Regression, Time Series Analysis
-4. Database Management: MySQL, PostgreSQL
+    Skills:
+    Data Analysis: Python, SQL, R
+    Data Visualization: Tableau, Power BI, Matplotlib, Seaborn
+    Statistical Modeling: Linear Regression, Logistic Regression, Time Series Analysis
+    Database Management: MySQL, PostgreSQL
 
-Projects:
-1. Customer Segmentation: Utilized clustering algorithms to segment customers based on purchasing behavior, resulting in targeted marketing campaigns that increased sales by 15%.
-2. Sales Forecasting: Developed a time series forecasting model to predict monthly sales, improving inventory management and reducing stockouts by 10%.
+    Projects:
+    1. Customer Segmentation: Utilized clustering algorithms to segment customers based on purchasing behavior, resulting in targeted marketing campaigns that increased sales by 15%.
+    2. Sales Forecasting: Developed a time series forecasting model to predict monthly sales, improving inventory management and reducing stockouts by 10%.
 
-Certifications:
-1. Certified Data Scientist (CDS)
-2. Google Data Analytics Professional Certificate
+    Certifications:
+    Certified Data Scientist (CDS)
+    Google Data Analytics Professional Certificate
 
-Technical Proficiency:
-1. Programming Languages: Python, R, SQL
-2. Tools: Tableau, Power BI, Excel, Jupyter Notebook
-3. Databases: MySQL, PostgreSQL, MongoDB
-"""
+    Technical Proficiency:
+    Programming Languages: Python, R, SQL
+    Tools: Tableau, Power BI, Excel, Jupyter Notebook
+    Databases: MySQL, PostgreSQL, MongoDB
+    """
     pdf.multi_cell(0, 10, content)
     pdf.output(path, 'F')
+
 
 def test_pdf_to_text():
     # Create a dummy PDF file for testing
@@ -81,16 +83,19 @@ def test_pdf_to_text():
     # Clean up
     os.remove(test_pdf_path)
 
+
 def test_suggest_best_job_fit():
     resume_text = "Experienced software engineer with skills in Python, Flask, and API development."
     job_fit = suggest_best_job_fit(resume_text)
     assert any(keyword in job_fit for keyword in ["Software Engineer", "Python Developer", "Software Developer", "API Development Engineer", "Flask Web Developer"])
+
 
 def test_generate_sample_job_links():
     job_title = "Software Engineer"
     linkedin_link, indeed_link = generate_sample_job_links(job_title)
     assert linkedin_link == f"https://www.linkedin.com/jobs/search/?keywords={job_title.replace(' ', '%20')}"
     assert indeed_link == f"https://www.indeed.com/jobs?q={job_title.replace(' ', '+')}"
+
 
 def test_chat_gpt():
     conversation = [
@@ -99,6 +104,7 @@ def test_chat_gpt():
     ]
     response = chat_gpt(conversation)
     assert "assist" in response.lower()
+
 
 def test_upload_resume(client):
     # Create a dummy PDF file for testing
