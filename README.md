@@ -140,3 +140,90 @@ Helper Functions
 The application is run with Flask's development server in debug mode. If an error occurs during execution, it is caught and printed to the console.
 
 Overall, the code implements a comprehensive resume screening tool that integrates PDF text extraction, natural language processing with GPT-3.5, and web development with Flask to provide a user-friendly interface for analyzing resumes against job descriptions.
+
+
+## Detailed Code Explanation for `test_screening_tool.py`
+
+The `test_screening_tool.py` file contains unit tests for the main application functions. These tests ensure that each component of the resume screening tool works correctly.
+
+### Importing Libraries and Configuring Flask App for Testing
+
+The script imports necessary libraries such as `pytest` for testing, `os` for file operations, and `fpdf` for creating PDF files. It also imports Flask and related modules for testing the web application.
+
+### Fixtures
+
+`@pytest.fixture`
+- Defines a `client` fixture that configures the Flask app for testing. It creates a test client that can be used to simulate requests to the application.
+
+### Helper Function
+
+`create_test_resume_pdf(path)`
+- A helper function that creates a sample PDF file with dummy resume content. This content is used to test the PDF text extraction functionality.
+
+### Test Functions
+
+`test_pdf_to_text()`
+- This test creates a dummy PDF file using the `create_test_resume_pdf` function.
+- It then tests the `pdf_to_text` function to ensure it correctly extracts text from the PDF.
+- Finally, it cleans up by deleting the test PDF file.
+
+`test_suggest_best_job_fit()`
+- Tests the `suggest_best_job_fit` function to ensure it returns relevant job titles based on the provided resume text.
+
+`test_generate_sample_job_links()`
+- Tests the `generate_sample_job_links` function to ensure it correctly generates LinkedIn and Indeed job search links based on a given job title.
+
+`test_chat_gpt()`
+- Tests the `chat_gpt` function to ensure it returns appropriate responses based on a simulated conversation.
+
+`test_upload_resume(client)`
+- Creates a dummy PDF file using the `create_test_resume_pdf` function.
+- Simulates uploading the PDF file via a POST request to the `/upload` route.
+- Verifies that the response status code is 200 and that the results contain the expected data.
+- Cleans up by deleting the test PDF file.
+
+## Detailed Code Explanation for GitHub Actions Workflow (`python-app.yml`)
+
+The `python-app.yml` file is a GitHub Actions workflow configuration that automates the process of running tests and linting the code whenever changes are pushed to the repository.
+
+### Workflow Triggers
+
+The workflow is triggered on push and pull request events to the `main` branch.
+
+### Permissions
+
+Sets the permission to read contents of the repository.
+
+### Jobs
+
+#### `build` Job
+
+- **Runs-on**: Specifies the job to run on the latest version of Ubuntu.
+- **Steps**: Defines a series of steps to execute the job.
+
+### Steps
+
+1. **Checkout Repository**
+    - Uses the `actions/checkout@v4` action to check out the repository's code.
+
+2. **Set up Python**
+    - Uses the `actions/setup-python@v3` action to set up Python 3.10.
+
+3. **Uninstall fpdf2 if installed**
+    - Runs a shell command to uninstall `fpdf2` if it is installed. This ensures there are no conflicts between `fpdf` and `fpdf2`.
+
+4. **Install Dependencies**
+    - Upgrades `pip` and installs the dependencies listed in `requirements.txt`.
+
+5. **Lint with flake8**
+    - Runs `flake8` to lint the code. It checks for Python syntax errors, undefined names, code complexity, and line length.
+
+6. **Test with pytest**
+    - Runs `pytest` to execute the test suite and ensure all tests pass.
+
+### Notifications
+
+- GitHub Actions sends notifications about the workflow status to users who have set up their notification preferences to receive such updates.
+
+By following these steps, the workflow ensures that the code is linted and tested automatically, providing immediate feedback on the status of the codebase.
+
