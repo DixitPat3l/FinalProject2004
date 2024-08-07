@@ -66,7 +66,7 @@ Technical Proficiency:
 3. Databases: MySQL, PostgreSQL, MongoDB
 """
     pdf.multi_cell(0, 10, content)
-    pdf.output(path)
+    pdf.output(path, 'F')
 
 def test_pdf_to_text():
     # Create a dummy PDF file for testing
@@ -84,7 +84,7 @@ def test_pdf_to_text():
 def test_suggest_best_job_fit():
     resume_text = "Experienced software engineer with skills in Python, Flask, and API development."
     job_fit = suggest_best_job_fit(resume_text)
-    assert any(keyword in job_fit for keyword in ["Software Engineer", "Python Developer", "Software Developer", "API Development Engineer", "Flask Web Developer"])
+    assert "Software Developer" in job_fit or "API Development Engineer" in job_fit or "Flask Web Developer" in job_fit
 
 def test_generate_sample_job_links():
     job_title = "Software Engineer"
