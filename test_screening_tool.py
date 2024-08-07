@@ -1,6 +1,6 @@
 import pytest
 import os
-from fpdf2 import FPDF
+from fpdf import FPDF
 from flask import Flask
 from werkzeug.datastructures import FileStorage
 from screening_tool import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links
