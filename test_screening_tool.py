@@ -16,7 +16,7 @@ def client():
 def create_test_resume_pdf(path):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", size=12)
+    pdf.set_font("Helvetica", size=12)
     content = """John Doe
 Data Analyst
 Email: john.doe@example.com | Phone: (123) 456-7890 | LinkedIn: linkedin.com/in/johndoe
@@ -53,8 +53,8 @@ Skills:
 4. Database Management: MySQL, PostgreSQL
 
 Projects:
-1. Customer Segmentation: Utilized clustering algorithms to segment customers based on purchasing behavior, resulting in targeted marketing campaigns that increased sales by 15%.
-2. Sales Forecasting: Developed a time series forecasting model to predict monthly sales, improving inventory management and reducing stockouts by 10%.
+1. Customer Segmentation: Utilized clustering algorithms to segment customers based on purchasing behavior, resulting in targeted marketing campaigns that increased sales by 15 percent.
+2. Sales Forecasting: Developed a time series forecasting model to predict monthly sales, improving inventory management and reducing stockouts by 10 percent.
 
 Certifications:
 1. Certified Data Scientist (CDS)
