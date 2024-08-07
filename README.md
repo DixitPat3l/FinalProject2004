@@ -28,6 +28,7 @@ Features
 
 
 git clone https://github.com/DixitPat3l/FinalProjectAIDI2004.git
+
 cd [Your folder name]
 
 
