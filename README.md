@@ -1,6 +1,12 @@
 # FinalProject2004
 ## This is the Final Project for AIDI 2004 - AI in Enterprise Systems.
 
+## Team Members-
+    Bhowmik Doshi (100891425)
+    Dixit Patel (100893847)
+    Meharan Shaikh (100896426)
+    Sanchit Kalra (100901585)
+
 ### AI-Powered Resume Screening Tool
 #### Project Overview
 
