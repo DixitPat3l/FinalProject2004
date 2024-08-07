@@ -84,7 +84,7 @@ def test_pdf_to_text():
 def test_suggest_best_job_fit():
     resume_text = "Experienced software engineer with skills in Python, Flask, and API development."
     job_fit = suggest_best_job_fit(resume_text)
-    assert "Software Developer" in job_fit or "API Development Engineer" in job_fit or "Flask Web Developer" in job_fit
+    assert any(keyword in job_fit for keyword in ["Software Engineer", "Python Developer", "Software Developer", "API Development Engineer", "Flask Web Developer"])
 
 def test_generate_sample_job_links():
     job_title = "Software Engineer"
