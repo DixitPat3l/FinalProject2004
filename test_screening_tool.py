@@ -1,6 +1,6 @@
 import pytest
 import os
-from fpdf import FPDF
+from fpdf2 import FPDF
 from flask import Flask
 from werkzeug.datastructures import FileStorage
 from screening_tool import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links
@@ -65,8 +65,9 @@ Technical Proficiency:
 - Tools: Tableau, Power BI, Excel, Jupyter Notebook
 - Databases: MySQL, PostgreSQL, MongoDB
 """
+    pdf.set_auto_page_break(auto=True, margin=15)
     pdf.multi_cell(0, 10, content)
-    pdf.output(path, 'F')
+    pdf.output(path)
 
 def test_pdf_to_text():
     # Create a dummy PDF file for testing
