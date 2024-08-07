@@ -66,7 +66,7 @@ Technical Proficiency:
 - Databases: MySQL, PostgreSQL, MongoDB
 """
     pdf.multi_cell(0, 10, content)
-    pdf.output(path)
+    pdf.output(path, 'F')
 
 def test_pdf_to_text():
     # Create a dummy PDF file for testing
