@@ -8,14 +8,14 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-# Load environment variables from .env file
+# Load environment variables from .env file (if it exists)
 load_dotenv()
 
 # Get the OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 if not openai.api_key:
-    raise ValueError("API key not found. Make sure you have set it in the .env file.")
+    raise ValueError("API key not found. Make sure you have set it in the environment or .env file.")
 
 results = []
 
