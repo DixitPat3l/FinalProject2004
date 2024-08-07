@@ -28,17 +28,17 @@ Professional Experience:
 
 Data Analyst
 XYZ Corporation, New York, NY
-January 2019 – Present
-- Conducted detailed data analysis using Python and SQL to identify trends and patterns in customer behavior.
-- Developed and maintained dashboards in Tableau to visualize key performance metrics for stakeholders.
-- Collaborated with cross-functional teams to define data requirements and provide data-driven insights for decision-making.
+January 2019 to Present
+1. Conducted detailed data analysis using Python and SQL to identify trends and patterns in customer behavior.
+2. Developed and maintained dashboards in Tableau to visualize key performance metrics for stakeholders.
+3. Collaborated with cross-functional teams to define data requirements and provide data-driven insights for decision-making.
 
 Junior Data Analyst
 ABC Solutions, San Francisco, CA
-June 2016 – December 2018
-- Assisted in data collection and data cleaning processes for large datasets.
-- Performed exploratory data analysis and created summary reports for various projects.
-- Supported senior analysts in building predictive models using statistical techniques.
+June 2016 to December 2018
+1. Assisted in data collection and data cleaning processes for large datasets.
+2. Performed exploratory data analysis and created summary reports for various projects.
+3. Supported senior analysts in building predictive models using statistical techniques.
 
 Education:
 
@@ -47,23 +47,23 @@ University of California, Berkeley
 Graduated: May 2016
 
 Skills:
-- Data Analysis: Python, SQL, R
-- Data Visualization: Tableau, Power BI, Matplotlib, Seaborn
-- Statistical Modeling: Linear Regression, Logistic Regression, Time Series Analysis
-- Database Management: MySQL, PostgreSQL
+1. Data Analysis: Python, SQL, R
+2. Data Visualization: Tableau, Power BI, Matplotlib, Seaborn
+3. Statistical Modeling: Linear Regression, Logistic Regression, Time Series Analysis
+4. Database Management: MySQL, PostgreSQL
 
 Projects:
-- Customer Segmentation: Utilized clustering algorithms to segment customers based on purchasing behavior, resulting in targeted marketing campaigns that increased sales by 15%.
-- Sales Forecasting: Developed a time series forecasting model to predict monthly sales, improving inventory management and reducing stockouts by 10%.
+1. Customer Segmentation: Utilized clustering algorithms to segment customers based on purchasing behavior, resulting in targeted marketing campaigns that increased sales by 15%.
+2. Sales Forecasting: Developed a time series forecasting model to predict monthly sales, improving inventory management and reducing stockouts by 10%.
 
 Certifications:
-- Certified Data Scientist (CDS)
-- Google Data Analytics Professional Certificate
+1. Certified Data Scientist (CDS)
+2. Google Data Analytics Professional Certificate
 
 Technical Proficiency:
-- Programming Languages: Python, R, SQL
-- Tools: Tableau, Power BI, Excel, Jupyter Notebook
-- Databases: MySQL, PostgreSQL, MongoDB
+1. Programming Languages: Python, R, SQL
+2. Tools: Tableau, Power BI, Excel, Jupyter Notebook
+3. Databases: MySQL, PostgreSQL, MongoDB
 """
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.multi_cell(0, 10, content)
