@@ -220,6 +220,12 @@ Sets the permission to read contents of the repository.
 
 6. **Test with pytest**
     - Runs `pytest` to execute the test suite and ensure all tests pass.
+  
+7. **Generate Coverage Report**
+    - Runs `pytest` with coverage options to generate an HTML coverage report for the screening_tool module.
+
+8. **Upload Coverage Report**
+    - Uses the actions/upload-artifact@v4 action to upload the generated coverage report (htmlcov directory) as an artifact named coverage-report. This artifact can be downloaded and viewed later to analyze the         test coverage.
 
 ### Notifications
 
