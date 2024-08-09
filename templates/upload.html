@@ -38,15 +38,14 @@
         margin: 0;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
       }
-      .container {
-        max-width: 800px;
+      .content {
         margin: 40px auto;
         padding: 30px;
         background-color: rgba(255, 255, 255, 0.95);
         border-radius: 15px;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       }
-      .container h2 {
+      .content h2 {
         font-size: 2em;
         margin-top: 0;
         text-align: center;
@@ -69,6 +68,7 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 1em;
+        font-family: 'Montserrat', sans-serif; /* Matching font */
       }
       button {
         background-color: #f39c12;
@@ -81,6 +81,7 @@
         width: 100%;
         font-size: 1em;
         font-weight: bold;
+        font-family: 'Montserrat', sans-serif; /* Matching font */
       }
       button:hover {
         background-color: #e67e22;
@@ -106,6 +107,8 @@
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        word-wrap: break-word;
+        table-layout: fixed;
       }
       th, td {
         padding: 12px;
@@ -138,7 +141,7 @@
     <div class="header">
       <h1>Elevate Your Career with AI-Enhanced Resume Screening</h1>
     </div>
-    <div class="container">
+    <div class="content">
       <h2>File Upload</h2>
       <form id="uploadForm" enctype="multipart/form-data">
         <p><label for="file" class="description">Upload Resume</label></p>
@@ -147,8 +150,8 @@
         <p><textarea id="job_description" name="job_description" placeholder="Job Description" required></textarea></p>
         <p><label for="mandatory_keywords" class="description">Enter Key Words</label></p>
         <p><textarea id="mandatory_keywords" name="mandatory_keywords" placeholder="Mandatory Keywords" required></textarea></p>
-        <p><button type="submit">SUBMIT</button></p>
-        <p><button id="downloadCSV" type="button">Download CSV</button></p>
+        <p><button type="submit">Submit</button></p>
+        <p><button id="downloadCSV" type="button" onclick="downloadCSV()">Download CSV</button></p>
         <div class="loader" id="loadingSpinner"></div>
       </form>
       <h2>Results</h2>
@@ -168,11 +171,70 @@
       </table>
     </div>
     <script>
+      // Auto-fill keywords based on the job description
+      document.getElementById('job_description').addEventListener('blur', function() {
+        const jobDescription = this.value.trim();
+        if (jobDescription.length > 0) {
+          fetch('/generate_keywords', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ job_description: jobDescription })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.keywords) {
+              document.getElementById('mandatory_keywords').value = data.keywords.join(', ');
+            } else if (data.error) {
+              alert('Error generating keywords: ' + data.error);
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        }
+      });
+
       document.getElementById('uploadForm').addEventListener('submit', function(e) {
         e.preventDefault();
         document.getElementById('loadingSpinner').style.display = 'block';
-        // Add your form submission logic here
+
+        const formData = new FormData(this);
+
+        fetch('/upload', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loadingSpinner').style.display = 'none';
+            if (data.results) {
+                const tableBody = document.getElementById('resultsTable').querySelector('tbody');
+                tableBody.innerHTML = ''; // Clear previous results
+                data.results.forEach(result => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).textContent = result[0];
+                    row.insertCell(1).textContent = result[1];
+                    row.insertCell(2).textContent = result[2];
+                    row.insertCell(3).textContent = result[3];
+                    row.insertCell(4).innerHTML = `<a href="${result[4]}" target="_blank">LinkedIn</a>`;
+                    row.insertCell(5).innerHTML = `<a href="${result[5]}" target="_blank">Indeed</a>`;
+                });
+                document.getElementById('downloadCSV').style.display = 'block';
+            } else if (data.error) {
+                alert(data.error);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            document.getElementById('loadingSpinner').style.display = 'none';
+        });
       });
+
+      function downloadCSV() {
+        window.location.href = '/download_csv';
+      }
     </script>
   </body>
 </html>

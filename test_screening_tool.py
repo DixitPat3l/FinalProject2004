@@ -2,10 +2,11 @@ import pytest
 import os
 from fpdf import FPDF
 from werkzeug.datastructures import FileStorage
-from screening_tool import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links
+from screening_tool import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links, update_csv
 
 # Configure the app for testing
 app.config['TESTING'] = True
+
 
 @pytest.fixture
 def client():
@@ -74,7 +75,7 @@ def test_pdf_to_text():
     # Create a dummy PDF file for testing
     test_pdf_path = 'test_resume.pdf'
     create_test_resume_pdf(test_pdf_path)
-    
+
     # Test the pdf_to_text function
     extracted_text = pdf_to_text(test_pdf_path)
     assert "John Doe" in extracted_text
@@ -87,7 +88,9 @@ def test_pdf_to_text():
 def test_suggest_best_job_fit():
     resume_text = "Experienced software engineer with skills in Python, Flask, and API development."
     job_fit = suggest_best_job_fit(resume_text)
-    assert any(keyword in job_fit for keyword in ["Software Engineer", "Python Developer", "Software Developer", "API Development Engineer", "Flask Web Developer"])
+    assert any(keyword in job_fit for keyword in
+               ["Software Engineer", "Python Developer", "Software Developer", "API Development Engineer",
+                "Flask Web Developer"])
 
 
 def test_generate_sample_job_links():
@@ -128,3 +131,27 @@ def test_upload_resume(client):
 
     # Clean up
     os.remove(test_pdf_path)
+
+
+def test_download_csv(client):
+    # Create a simple CSV for testing
+    test_results = [
+        ["Test Resume", "Test comment", "Suitable", "Software Engineer", "https://linkedin.com", "https://indeed.com"]
+    ]
+    update_csv(test_results)
+
+    # Test the download_csv route
+    response = client.get('/download_csv')
+
+    # Check if the file is returned
+    assert response.status_code == 200
+    assert 'text/csv' in response.content_type
+    assert 'attachment' in response.headers['Content-Disposition']
+
+    # Check if the CSV content is correct
+    assert b"Test Resume" in response.data
+    assert b"Software Engineer" in response.data
+
+    # Clean up
+    if os.path.exists('results.csv'):
+        os.remove('results.csv')
