@@ -145,24 +145,24 @@ def test_download_csv(client):
     test_results = [
         ["Test Resume", "Test comment", "Suitable", "Software Engineer", "https://linkedin.com", "https://indeed.com"]
     ]
-
+    
     # Update CSV in memory
     output = io.StringIO()
     csv_writer = csv.writer(output)
     csv_writer.writerow(["Resume Name", "Comments", "Suitability", "Best Job Fit", "LinkedIn Job Link", "Indeed Job Link"])
     csv_writer.writerows(test_results)
     output.seek(0)
-
-    # Mock the update_csv function to return the in-memory CSV
-    with patch('app.update_csv', return_value=output.getvalue()):
+    
+    # Mock the update_csv function to use the in-memory CSV content
+    with patch('app.update_csv', side_effect=lambda _: csv_writer.writerows(test_results)):
         # Test the download_csv route
         response = client.get('/download_csv')
-
+    
         # Check if the file is returned
         assert response.status_code == 200
         assert 'text/csv' in response.content_type
         assert 'attachment' in response.headers['Content-Disposition']
-
+    
         # Check if the CSV content is correct
         assert b"Test Resume" in response.data
         assert b"Software Engineer" in response.data
