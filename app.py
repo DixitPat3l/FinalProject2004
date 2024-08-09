@@ -175,10 +175,12 @@ def update_csv(results):
         with open('results.csv', 'w', newline='') as csvfile:
             csv_writer = csv.writer(csvfile)
             csv_writer.writerow(["Resume Name", "Comments", "Suitability", "Best Job Fit", "LinkedIn Job Link", "Indeed Job Link"])
-            csv_writer.writerows(results)
+            for result in results:
+                # Make sure the "Best Job Fit" column contains all the job titles as they appear on the website
+                best_job_fit = " ".join(result[3].split('\n'))
+                csv_writer.writerow([result[0], result[1], result[2], best_job_fit, result[4], result[5]])
     except Exception as e:
         print(f"Error writing to CSV: {str(e)}")
-
 
 
 @app.route('/')
