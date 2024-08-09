@@ -151,7 +151,7 @@
         <p><label for="mandatory_keywords" class="description">Enter Key Words</label></p>
         <p><textarea id="mandatory_keywords" name="mandatory_keywords" placeholder="Mandatory Keywords" required></textarea></p>
         <p><button type="submit">Submit</button></p>
-        <p><button id="downloadCSV" type="button" onclick="downloadCSV()">Download CSV</button></p>
+        <p><button id="downloadCSV" type="button">Download CSV</button></p>
         <div class="loader" id="loadingSpinner"></div>
       </form>
       <h2>Results</h2>
@@ -170,71 +170,81 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Place the script just before the closing body tag -->
     <script>
-      // Auto-fill keywords based on the job description
-      document.getElementById('job_description').addEventListener('blur', function() {
-        const jobDescription = this.value.trim();
-        if (jobDescription.length > 0) {
-          fetch('/generate_keywords', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ job_description: jobDescription })
+      document.addEventListener('DOMContentLoaded', function() {
+
+        // Auto-fill keywords based on the job description
+        document.getElementById('job_description').addEventListener('blur', function() {
+          const jobDescription = this.value.trim();
+          if (jobDescription.length > 0) {
+            fetch('/generate_keywords', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ job_description: jobDescription })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.keywords) {
+                document.getElementById('mandatory_keywords').value = data.keywords.join(', ');
+              } else if (data.error) {
+                alert('Error generating keywords: ' + data.error);
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+          }
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          document.getElementById('loadingSpinner').style.display = 'block';
+
+          const formData = new FormData(this);
+
+          fetch('/upload', {
+              method: 'POST',
+              body: formData,
           })
           .then(response => response.json())
           .then(data => {
-            if (data.keywords) {
-              document.getElementById('mandatory_keywords').value = data.keywords.join(', ');
-            } else if (data.error) {
-              alert('Error generating keywords: ' + data.error);
-            }
+              document.getElementById('loadingSpinner').style.display = 'none';
+              if (data.results) {
+                  const tableBody = document.getElementById('resultsTable').querySelector('tbody');
+                  tableBody.innerHTML = ''; // Clear previous results
+                  data.results.forEach(result => {
+                      const row = tableBody.insertRow();
+                      row.insertCell(0).textContent = result[0];
+                      row.insertCell(1).textContent = result[1];
+                      row.insertCell(2).textContent = result[2];
+                      row.insertCell(3).textContent = result[3];
+                      row.insertCell(4).innerHTML = `<a href="${result[4]}" target="_blank">LinkedIn</a>`;
+                      row.insertCell(5).innerHTML = `<a href="${result[5]}" target="_blank">Indeed</a>`;
+                  });
+                  document.getElementById('downloadCSV').style.display = 'block';
+              } else if (data.error) {
+                  alert(data.error);
+              }
           })
           .catch((error) => {
-            console.error('Error:', error);
+              console.error('Error:', error);
+              document.getElementById('loadingSpinner').style.display = 'none';
           });
-        }
-      });
-
-      document.getElementById('uploadForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        document.getElementById('loadingSpinner').style.display = 'block';
-
-        const formData = new FormData(this);
-
-        fetch('/upload', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('loadingSpinner').style.display = 'none';
-            if (data.results) {
-                const tableBody = document.getElementById('resultsTable').querySelector('tbody');
-                tableBody.innerHTML = ''; // Clear previous results
-                data.results.forEach(result => {
-                    const row = tableBody.insertRow();
-                    row.insertCell(0).textContent = result[0];
-                    row.insertCell(1).textContent = result[1];
-                    row.insertCell(2).textContent = result[2];
-                    row.insertCell(3).textContent = result[3];
-                    row.insertCell(4).innerHTML = `<a href="${result[4]}" target="_blank">LinkedIn</a>`;
-                    row.insertCell(5).innerHTML = `<a href="${result[5]}" target="_blank">Indeed</a>`;
-                });
-                document.getElementById('downloadCSV').style.display = 'block';
-            } else if (data.error) {
-                alert(data.error);
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            document.getElementById('loadingSpinner').style.display = 'none';
         });
-      });
 
-      function downloadCSV() {
-        window.location.href = '/download_csv';
-      }
+        // Define the downloadCSV function
+        function downloadCSV() {
+          window.location.href = '/download_csv';
+        }
+
+        // Attach the downloadCSV function to the button
+        document.getElementById('downloadCSV').addEventListener('click', downloadCSV);
+
+      });
     </script>
   </body>
 </html>
