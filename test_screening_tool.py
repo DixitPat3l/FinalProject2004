@@ -155,6 +155,3 @@ def test_download_csv(client):
         assert response.status_code == 200
         assert 'text/csv' in response.content_type
         assert 'attachment' in response.headers['Content-Disposition']
-
-    # Clean up
-    output.close()
