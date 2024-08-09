@@ -1,7 +1,13 @@
 import pytest
 import os
+import io  # Add this import for in-memory operations
+import csv  # Add this import for CSV operations
+from unittest.mock import patch  # Add this import for mocking
+
+from werkzeug.datastructures import FileStorage
+from app import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links, update_csv
+
 from fpdf import FPDF
-from io import StringIO
 from werkzeug.datastructures import FileStorage
 from app import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links, update_csv
 
