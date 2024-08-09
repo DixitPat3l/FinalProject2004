@@ -134,24 +134,28 @@ def test_upload_resume(client):
 
 
 def test_download_csv(client):
-    # Create a simple CSV for testing
+    # Create a simple CSV content for testing in memory
     test_results = [
         ["Test Resume", "Test comment", "Suitable", "Software Engineer", "https://linkedin.com", "https://indeed.com"]
     ]
-    update_csv(test_results)
 
-    # Test the download_csv route
-    response = client.get('/download_csv')
+    # Update CSV in memory
+    output = io.StringIO()
+    csv_writer = csv.writer(output)
+    csv_writer.writerow(["Resume Name", "Comments", "Suitability", "Best Job Fit", "LinkedIn Job Link", "Indeed Job Link"])
+    csv_writer.writerows(test_results)
+    output.seek(0)
 
-    # Check if the file is returned
-    assert response.status_code == 200
-    assert 'text/csv' in response.content_type
-    assert 'attachment' in response.headers['Content-Disposition']
+    # Mock the update_csv function to return the in-memory CSV
+    with patch('app.update_csv', return_value=output.getvalue()):
+        # Test the download_csv route
+        response = client.get('/download_csv')
 
-    # Check if the CSV content is correct
-    assert b"Test Resume" in response.data
-    assert b"Software Engineer" in response.data
+        # Check if the file is returned
+        assert response.status_code == 200
+        assert 'text/csv' in response.content_type
+        assert 'attachment' in response.headers['Content-Disposition']
 
-    # Clean up
-    if os.path.exists('results.csv'):
-        os.remove('results.csv')
+        # Check if the CSV content is correct
+        assert b"Test Resume" in response.data
+        assert b"Software Engineer" in response.data
