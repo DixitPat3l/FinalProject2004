@@ -180,7 +180,8 @@ def index():
 
 if __name__ == '__main__':
     try:
-        app.run(debug=True)
+        port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
     except Exception as e:
         print(f"An error occurred: {e}")
         input("Press Enter to exit...")
