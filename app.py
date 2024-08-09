@@ -149,14 +149,21 @@ def upload_resume():
 @app.route('/download_csv', methods=['GET'])
 def download_csv():
     try:
-        # Generate the CSV file if it doesn't exist or if it needs updating
-        if not os.path.exists('results.csv') or os.path.getsize('results.csv') == 0:
-            if not results:
-                return jsonify({"error": "No results available to download."}), 400
-            update_csv(results)
+        if not results:
+            return jsonify({"error": "No results available to download."}), 400
 
-        # Send the file from the directory where the script is running
-        return send_from_directory(directory=os.getcwd(), path='results.csv', as_attachment=True)
+        # Generate the CSV in memory
+        output = StringIO()
+        csv_writer = csv.writer(output)
+        csv_writer.writerow(["Resume Name", "Comments", "Suitability", "Best Job Fit", "LinkedIn Job Link", "Indeed Job Link"])
+        csv_writer.writerows(results)
+        output.seek(0)
+
+        # Create a response with the CSV content
+        response = make_response(output.getvalue())
+        response.headers["Content-Disposition"] = "attachment; filename=results.csv"
+        response.headers["Content-type"] = "text/csv"
+        return response
 
     except Exception as e:
         print(f"Error sending CSV file: {str(e)}")
