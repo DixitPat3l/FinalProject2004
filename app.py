@@ -2,6 +2,7 @@ import os
 import openai
 import pdfplumber
 import csv
+from io import StringIO
 from flask import Flask, request, jsonify, render_template, send_file, send_from_directory
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
