@@ -2,7 +2,7 @@ import pytest
 import os
 from fpdf import FPDF
 from werkzeug.datastructures import FileStorage
-from screening_tool import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links, update_csv
+from app import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links, update_csv
 
 # Configure the app for testing
 app.config['TESTING'] = True
