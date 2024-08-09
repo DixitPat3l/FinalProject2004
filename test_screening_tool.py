@@ -1,6 +1,7 @@
 import pytest
 import os
 from fpdf import FPDF
+from io import StringIO
 from werkzeug.datastructures import FileStorage
 from app import app, pdf_to_text, suggest_best_job_fit, chat_gpt, generate_sample_job_links, update_csv
 
